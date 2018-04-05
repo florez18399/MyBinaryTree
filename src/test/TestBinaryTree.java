@@ -3,16 +3,13 @@ package test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Comparator;
-
 import org.junit.jupiter.api.Test;
-
-import gui.JFrameMain;
 import models.MyBinaryTree;
 
 public class TestBinaryTree {
 	@Test
 	public void testSearchFather() {
-		MyBinaryTree<Integer> tree = new MyBinaryTree<>(new Comparator<Integer>() {
+		MyBinaryTree<Integer> tree = new MyBinaryTree<Integer>(new Comparator<Integer>() {
 			@Override
 			public int compare(Integer o1, Integer o2) {
 				return o1 - o2;

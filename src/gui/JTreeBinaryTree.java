@@ -3,13 +3,13 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import models.Node;
 
-public class JTreeBinaryTree extends JTree {
+public class JTreeBinaryTree<T> extends JTree {
 
 	/**
 	 * 
@@ -17,9 +17,9 @@ public class JTreeBinaryTree extends JTree {
 	private static final long serialVersionUID = 1L;
 	private DefaultMutableTreeNode mutableTreeNode;
 	private DefaultTreeModel defaultTreeModel;
-	private Node<Integer> root;
+	private Node<T> root;
 
-	public JTreeBinaryTree(Node<Integer> root) {
+	public JTreeBinaryTree(Node<T> root) {
 		mutableTreeNode = new DefaultMutableTreeNode();
 		defaultTreeModel = new DefaultTreeModel(mutableTreeNode);
 		setModel(defaultTreeModel);
@@ -40,20 +40,19 @@ public class JTreeBinaryTree extends JTree {
 		setModel(defaultTreeModel);
 		paintTree(root.getLeft(), mutableTreeNode);
 		paintTree(root.getRight(), mutableTreeNode);
-		// jTree.removeAll();
-		// DefaultTreeCellRenderer render = (DefaultTreeCellRenderer)
-		// jTree.getCellRenderer();
-
-		// ImageIcon imageIcon = getScaleIconImage(ConstantsGUI.APP_ICON_PATH);
-		// render.setLeafIcon(imageIcon);
-		// render.setOpenIcon(imageIcon);
-		// render.setClosedIcon(imageIcon);
-		// render.setBackground(ConstantsGUI.COLOR_BACK);
-		// render.setForeground(Color.WHITE);
-		// add(jTree, BorderLayout.CENTER);
+	}
+	
+	public void setIconNode(String pathIcon) {
+		DefaultTreeCellRenderer render = (DefaultTreeCellRenderer)
+		getCellRenderer();
+		ImageIcon imageIcon = getScaleIconImage(pathIcon);
+		render.setLeafIcon(imageIcon);
+		render.setOpenIcon(imageIcon);
+		render.setClosedIcon(imageIcon);
+		paintTree();
 	}
 
-	private void paintTree(Node<Integer> root, DefaultMutableTreeNode jroot) {
+	private void paintTree(Node<T> root, DefaultMutableTreeNode jroot) {
 		if (root != null) {
 			DefaultMutableTreeNode jNode = createNodeJtree(root);
 			jroot.add(jNode);
@@ -62,7 +61,7 @@ public class JTreeBinaryTree extends JTree {
 		}
 	}
 
-	public DefaultMutableTreeNode createNodeJtree(Node<Integer> node) {
+	public DefaultMutableTreeNode createNodeJtree(Node<T> node) {
 		return new DefaultMutableTreeNode(node.toString());
 	}
 

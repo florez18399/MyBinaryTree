@@ -3,15 +3,13 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Comparator;
-
 import javax.swing.JOptionPane;
-
-import gui.JFrameMain;
+import gui.JFrameDrawTree;
 import models.MyBinaryTree;
 
 public class Controller implements ActionListener {
 	private static Controller controller;
-	private JFrameMain frameMain;
+	private JFrameDrawTree<Integer> frameMain;
 	private MyBinaryTree<Integer> binaryTree;
 
 	private Controller() {
@@ -34,7 +32,7 @@ public class Controller implements ActionListener {
 
 		});
 		binaryTree.addNode(100);
-		frameMain = new JFrameMain(binaryTree.getRoot());
+		frameMain = new JFrameDrawTree<Integer>(binaryTree.getRoot());
 	}
 
 	@Override

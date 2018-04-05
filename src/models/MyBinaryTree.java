@@ -2,8 +2,6 @@ package models;
 
 import java.util.Comparator;
 
-import org.w3c.dom.NamedNodeMap;
-
 public class MyBinaryTree<T> {
 	private Comparator<T> comparator;
 	private Node<T> root;
@@ -73,11 +71,13 @@ public class MyBinaryTree<T> {
 	}
 
 	private Node<T> searchLowerToRemove(Node<T> node) {
+		T info = node.getInfo();
 		while (node.getLeft() != null) {
 			node = node.getLeft();
 		}
 		Node<T> nodeToReturn = new Node<T>(node.getInfo());
-		searchFather(node.getInfo()).setLeft(node.getRight());
+		if(comparator.compare(info, nodeToReturn.getInfo()) != 0)
+			searchFather(node.getInfo()).setLeft(node.getRight());
 		return nodeToReturn;
 	}
 
@@ -150,21 +150,20 @@ public class MyBinaryTree<T> {
 	public Node<T> getRoot() {
 		return root;
 	}
-	
+
 	public Node<T> searchLowerNode(Node<T> node) {
-		while(node.getLeft() != null) {
+		while (node.getLeft() != null) {
 			node = node.getLeft();
 		}
 		return node;
 	}
-	
+
 	public Node<T> searchMajorNode(Node<T> node) {
-		while(node.getRight() != null) {
+		while (node.getRight() != null) {
 			node = node.getRight();
 		}
 		return node;
 	}
-	
 
 	/**
 	 * @param root
