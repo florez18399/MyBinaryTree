@@ -35,6 +35,8 @@ public class MyBinaryTree<T> {
 				addNode(nodeToAdd, actual.getRight());
 			else
 				actual.setRight(nodeToAdd);
+		else
+			throw new NumberFormatException("El número ya está agregado al árbol");
 	}
 
 	/**
@@ -43,42 +45,52 @@ public class MyBinaryTree<T> {
 	 * @param info
 	 */
 	public void removeNode(T info) {
-		Node<T> nodeFather = searchFather(info);
+		Node<T> nodeFather = null;
+		if (comparator.compare(info, root.getInfo()) != 0) {
+			nodeFather = searchFather(info);
+		}
 		Node<T> nodeToRemove = searchNode(info);
 		if (!isFather(nodeToRemove)) {
-			changeSon(nodeFather, nodeToRemove, null);
+			changeSon(nodeFather, info, null);
 		} else if (nodeToRemove.getLeft() != null && nodeToRemove.getRight() == null) {
-			changeSon(nodeFather, nodeToRemove, nodeToRemove.getLeft());
+			changeSon(nodeFather, info, nodeToRemove.getLeft());
 		} else if (nodeToRemove.getLeft() == null && nodeToRemove.getRight() != null) {
-			changeSon(nodeFather, nodeToRemove, nodeToRemove.getRight());
+			changeSon(nodeFather, info, nodeToRemove.getRight());
 		} else {
-			Node<T> newSon = searchLowerToRemove(nodeToRemove.getRight());
-			newSon.setLeft(nodeToRemove.getLeft());
-			newSon.setRight(nodeToRemove.getRight());
-			changeSon(nodeFather, nodeToRemove, newSon);
+			Node<T> nodeLower = searchLowerNode(nodeToRemove.getRight());
+			Node<T> nodeMajor = searchMajorNode(nodeToRemove.getLeft());
+			if (Math.abs(comparator.compare(nodeLower.getInfo(), nodeToRemove.getInfo())) < Math
+					.abs(comparator.compare(nodeMajor.getInfo(), nodeToRemove.getInfo()))) {
+				removeNode(nodeLower.getInfo());
+				nodeToRemove.setInfo(nodeLower.getInfo());
+			} else {
+				removeNode(nodeMajor.getInfo());
+				nodeToRemove.setInfo(nodeMajor.getInfo());
+			}
 		}
 	}
 
-	private void changeSon(Node<T> nodeFather, Node<T> nodeSonActual, Node<T> nodeNewSon) {
-		if (nodeFather.getLeft() != null) {
-			if (nodeFather.getLeft().equals(nodeSonActual))
+	private void changeSon(Node<T> nodeFather, T info, Node<T> nodeNewSon) {
+		if (nodeFather == null) {
+			if (root.getLeft() != null) {
+				if (comparator.compare(root.getLeft().getInfo(), info) == 0)
+					if (comparator.compare(nodeNewSon.getInfo(), root.getLeft().getInfo()) != 0) {
+						nodeNewSon.setLeft(root.getLeft());
+					} else if (comparator.compare(nodeNewSon.getInfo(), root.getRight().getInfo()) != 0)
+						nodeNewSon.setRight(root.getRight());
+			} else {
+				if (comparator.compare(nodeNewSon.getInfo(), root.getRight().getInfo()) != 0)
+					nodeNewSon.setRight(root.getRight());
+			}
+			root = nodeNewSon;
+		} else if (nodeFather.getLeft() != null) {
+			if (comparator.compare(nodeFather.getLeft().getInfo(), info) == 0)
 				nodeFather.setLeft(nodeNewSon);
 			else
 				nodeFather.setRight(nodeNewSon);
 		} else {
 			nodeFather.setRight(nodeNewSon);
 		}
-	}
-
-	private Node<T> searchLowerToRemove(Node<T> node) {
-		T info = node.getInfo();
-		while (node.getLeft() != null) {
-			node = node.getLeft();
-		}
-		Node<T> nodeToReturn = new Node<T>(node.getInfo());
-		if(comparator.compare(info, nodeToReturn.getInfo()) != 0)
-			searchFather(node.getInfo()).setLeft(node.getRight());
-		return nodeToReturn;
 	}
 
 	private boolean isFather(Node<T> node) {

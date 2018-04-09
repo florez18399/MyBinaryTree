@@ -31,7 +31,6 @@ public class Controller implements ActionListener {
 			}
 
 		});
-		binaryTree.addNode(100);
 		frameMain = new JFrameDrawTree<Integer>(binaryTree.getRoot());
 	}
 
@@ -39,15 +38,25 @@ public class Controller implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "add":
+			try {
 			int number = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el numero a agregar"));
-			binaryTree.addNode(number);
-			frameMain.repaintComponents();
+				binaryTree.addNode(number);
+				frameMain.setRoot(binaryTree.getRoot());
+				frameMain.repaintComponents();
+			} catch (NumberFormatException e2) {
+				JOptionPane.showMessageDialog(frameMain, "Número errado");
+			}
 			break;
 
 		case "remove":
-			int number2 = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el numero a eliminar"));
-			binaryTree.removeNode(number2);
-			frameMain.repaintComponents();
+			try {
+				int number2 = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el numero a eliminar"));
+				binaryTree.removeNode(number2);
+				frameMain.setRoot(binaryTree.getRoot());
+				frameMain.repaintComponents();
+			} catch (NumberFormatException e2) {
+				JOptionPane.showMessageDialog(frameMain, "Número errado");
+			}
 			break;
 
 		default:

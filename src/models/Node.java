@@ -1,5 +1,7 @@
 package models;
 
+import java.math.RoundingMode;
+
 public class Node <T>{
 	private T info;
 	private Node<T> left;
@@ -53,7 +55,12 @@ public class Node <T>{
 	
 	@Override
 	public String toString() {
-		return String.valueOf(info.toString());
+		String string = info.toString();
+		if(left!= null)
+			string += "i: " + left.getInfo();
+		if(right != null)
+			string += "d: " + right.getInfo();
+		return string;
 	}
 	
 }

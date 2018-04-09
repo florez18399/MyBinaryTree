@@ -62,7 +62,7 @@ public class JFrameDrawTree<T> extends JFrame {
 		barMenu.add(menu);
 		setJMenuBar(barMenu);
 	}
-	
+
 	private JMenuItem createJMenuItem(String command, String title, int event) {
 		JMenuItem menuItem = new JMenuItem(title);
 		menuItem.setActionCommand(command);
@@ -76,4 +76,10 @@ public class JFrameDrawTree<T> extends JFrame {
 		drawTree.repaint();
 		drawTree.revalidate();
 	}
+
+	public void setRoot(Node<T> root) {
+		drawTree.setRoot(root);
+		jTreeBinaryTree.setRoot(root);
+	}
+
 }

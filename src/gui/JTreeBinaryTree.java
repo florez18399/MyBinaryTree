@@ -35,16 +35,17 @@ public class JTreeBinaryTree<T> extends JTree {
 	}
 
 	public void paintTree() {
-		mutableTreeNode = createNodeJtree(root);
-		defaultTreeModel = new DefaultTreeModel(mutableTreeNode);
-		setModel(defaultTreeModel);
-		paintTree(root.getLeft(), mutableTreeNode);
-		paintTree(root.getRight(), mutableTreeNode);
+		if (root != null) {
+			mutableTreeNode = createNodeJtree(root);
+			defaultTreeModel = new DefaultTreeModel(mutableTreeNode);
+			setModel(defaultTreeModel);
+			paintTree(root.getLeft(), mutableTreeNode);
+			paintTree(root.getRight(), mutableTreeNode);
+		}
 	}
-	
+
 	public void setIconNode(String pathIcon) {
-		DefaultTreeCellRenderer render = (DefaultTreeCellRenderer)
-		getCellRenderer();
+		DefaultTreeCellRenderer render = (DefaultTreeCellRenderer) getCellRenderer();
 		ImageIcon imageIcon = getScaleIconImage(pathIcon);
 		render.setLeafIcon(imageIcon);
 		render.setOpenIcon(imageIcon);
@@ -62,7 +63,7 @@ public class JTreeBinaryTree<T> extends JTree {
 	}
 
 	public DefaultMutableTreeNode createNodeJtree(Node<T> node) {
-		return new DefaultMutableTreeNode(node.toString());
+		return new DefaultMutableTreeNode(node.getInfo().toString());
 	}
 
 	public ImageIcon getScaleIconImage(String imageURL) {
@@ -77,6 +78,21 @@ public class JTreeBinaryTree<T> extends JTree {
 		paintTree();
 		revalidate();
 		repaint();
+	}
+
+	/**
+	 * @return the root
+	 */
+	public Node<T> getRoot() {
+		return root;
+	}
+
+	/**
+	 * @param root
+	 *            the root to set
+	 */
+	public void setRoot(Node<T> root) {
+		this.root = root;
 	}
 
 }
